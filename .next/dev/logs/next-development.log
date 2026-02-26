@@ -1,0 +1,24 @@
+[00:00:01.735] Server  LOG      ✓ Ready in 1434ms
+[00:00:21.065] Server  LOG      ○ Compiling / ...
+[00:00:53.384] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:14.867] Server  LOG      ○ Compiling /api/chat ...
+[00:01:25.327] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[00:01:28.051] Server  ERROR   AI_APICallError: This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.
+[00:02:08.774] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:20.229] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[00:02:21.986] Server  ERROR   AI_APICallError: This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.
+[00:03:21.372] Server  LOG      ✓ Compiled in 4.9s
+[00:03:56.678] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[00:06:16.527] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[01:21:44.553] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[01:22:36.062] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[01:39:44.433] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:40:01.518] Server  ERROR   Pinecone search error: PineconeBadRequestError: {"error":{"code":"INVALID_ARGUMENT","message":"Invalid Namespace: Records operations do not support referring to a namespace with an empty string starting in API Version 2025-04. Please specify namespace='__default__' to refer to the default namespace"},"status":400}
+[01:40:01.518] Server  LOG     Pinecone returned no data — falling back to Exa web search
+[01:41:02.295] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:41:15.504] Server  LOG     Pinecone: Found 5 matching records
+[01:50:38.364] Server  LOG     Pinecone: Found 5 matching records
+[01:52:36.925] Server  LOG      ✓ Compiled in 837ms
+[01:53:33.286] Server  LOG     Pinecone: Found 5 matching records
+[02:14:06.839] Server  LOG      ✓ Compiled in 544ms
+[02:14:33.409] Server  LOG     Pinecone: Found 8 matching records

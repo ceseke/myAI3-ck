@@ -59,6 +59,11 @@ export async function isContentFlagged(text: string): Promise<ModerationResult> 
         return { flagged: false };
     }
 
+    // Skip moderation if no OpenAI API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+        return { flagged: false };
+    }
+
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });

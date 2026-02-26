@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MyAI3",
-  description: "MyAI3",
+  title: "YETI Guide | AI Product Assistant",
+  description: "Your AI-powered guide to YETI coolers, drinkware, bags, and outdoor gear. Get expert product recommendations, comparisons, and answers instantly.",
+  keywords: "YETI, coolers, drinkware, Rambler, Tundra, Hopper, outdoor gear, camping, fishing",
 };
 
 export default function RootLayout({
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
         className={`${inter.variable} ${geistMono.variable} antialiased`}
       >

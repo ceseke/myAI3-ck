@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Eraser, Loader2, Plus, PlusIcon, Square } from "lucide-react";
+import { ArrowUp, Eraser, Loader2, Plus, PlusIcon, Square, Mountain, Snowflake } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
@@ -64,6 +64,14 @@ const saveMessagesToStorage = (messages: UIMessage[], durations: Record<string, 
     console.error('Failed to save messages to localStorage:', error);
   }
 };
+
+// Quick suggestion chips for first-time users
+const QUICK_SUGGESTIONS = [
+  { label: "🧊 Best cooler for camping", message: "What's the best YETI cooler for a weekend camping trip?" },
+  { label: "🥤 Compare Ramblers", message: "Can you compare the different YETI Rambler sizes and help me pick one?" },
+  { label: "🎣 Fishing gear", message: "What YETI products do you recommend for a fishing trip?" },
+  { label: "🎁 Gift ideas", message: "What are the best YETI products to give as gifts?" },
+];
 
 export default function Chat() {
   const [isClient, setIsClient] = useState(false);
@@ -136,29 +144,47 @@ export default function Chat() {
     toast.success("Chat cleared");
   }
 
+  function handleSuggestionClick(message: string) {
+    sendMessage({ text: message });
+  }
+
+  // Determine if we should show suggestions (only when there's just the welcome message)
+  const showSuggestions = isClient && messages.length <= 1 && status === "ready";
+
   return (
-    <div className="flex h-screen items-center justify-center font-sans dark:bg-black">
-      <main className="w-full dark:bg-black h-screen relative">
-        <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent dark:bg-black overflow-visible pb-16">
+    <div className="flex h-screen items-center justify-center font-sans dark:bg-background yeti-bg-pattern">
+      <main className="w-full dark:bg-transparent h-screen relative">
+        {/* Header */}
+        <div className="fixed top-0 left-0 right-0 z-50 overflow-visible">
           <div className="relative overflow-visible">
             <ChatHeader>
-              <ChatHeaderBlock />
+              <ChatHeaderBlock>
+                <div className="flex items-center gap-2 opacity-60">
+                  <Snowflake className="size-4 text-primary" />
+                </div>
+              </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-center items-center">
-                <Avatar
-                  className="size-8 ring-1 ring-primary"
-                >
-                  <AvatarImage src="/logo.png" />
-                  <AvatarFallback>
-                    <Image src="/logo.png" alt="Logo" width={36} height={36} />
-                  </AvatarFallback>
-                </Avatar>
-                <p className="tracking-tight">Chat with {AI_NAME}</p>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <Avatar className="size-9 ring-2 ring-primary/50 shadow-lg">
+                      <AvatarImage src="/logo.png" />
+                      <AvatarFallback className="bg-primary text-primary-foreground font-bold text-sm">
+                        YG
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute -bottom-0.5 -right-0.5 size-3 bg-green-500 rounded-full border-2 border-background" />
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="tracking-tight font-semibold text-sm yeti-shimmer">{AI_NAME}</p>
+                    <p className="text-xs text-muted-foreground">Your YETI Product Expert</p>
+                  </div>
+                </div>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="cursor-pointer"
+                  className="cursor-pointer border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all duration-200"
                   onClick={clearChat}
                 >
                   <Plus className="size-4" />
@@ -168,25 +194,51 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
+
+        {/* Messages area */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[88px] pb-[150px]">
           <div className="flex flex-col items-center justify-end min-h-full">
             {isClient ? (
               <>
                 <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
+
+                {/* Quick suggestion chips */}
+                {showSuggestions && (
+                  <div className="max-w-3xl w-full mt-6">
+                    <p className="text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wider">Try asking about:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {QUICK_SUGGESTIONS.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleSuggestionClick(suggestion.message)}
+                          className="px-4 py-2.5 text-sm rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm text-foreground hover:bg-primary/10 hover:border-primary/30 hover:shadow-md transition-all duration-200 cursor-pointer active:scale-95"
+                        >
+                          {suggestion.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full">
-                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="size-4 animate-spin text-primary" />
+                      <span className="text-xs text-muted-foreground animate-pulse">Looking up YETI products...</span>
+                    </div>
                   </div>
                 )}
               </>
             ) : (
               <div className="flex justify-center max-w-2xl w-full">
-                <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                <Loader2 className="size-4 animate-spin text-primary" />
               </div>
             )}
           </div>
         </div>
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/50 to-transparent dark:bg-black overflow-visible pt-13">
+
+        {/* Input area */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/80 to-transparent overflow-visible pt-13">
           <div className="w-full px-5 pt-5 pb-1 items-center flex justify-center relative overflow-visible">
             <div className="message-fade-overlay" />
             <div className="max-w-3xl w-full">
@@ -204,8 +256,8 @@ export default function Chat() {
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-15 pr-15 pl-5 bg-card rounded-[20px]"
-                            placeholder="Type your message here..."
+                            className="h-15 pr-15 pl-5 bg-card/80 backdrop-blur-sm rounded-[20px] border-border/50 focus:border-primary/40 focus:ring-primary/20 transition-all duration-200 placeholder:text-muted-foreground/60"
+                            placeholder="Ask about YETI coolers, drinkware, bags..."
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
                             autoComplete="off"
@@ -218,7 +270,7 @@ export default function Chat() {
                           />
                           {(status == "ready" || status == "error") && (
                             <Button
-                              className="absolute right-3 top-3 rounded-full"
+                              className="absolute right-3 top-3 rounded-full yeti-glow"
                               type="submit"
                               disabled={!field.value.trim()}
                               size="icon"
@@ -245,8 +297,8 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline">Terms of Use</Link>&nbsp;Powered by&nbsp;<Link href="https://ringel.ai/" className="underline">Ringel.AI</Link>
+          <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-muted-foreground/70">
+            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline hover:text-foreground transition-colors">Terms of Use</Link>&nbsp;•&nbsp;Powered by&nbsp;<Link href="https://yeti.com/" className="underline hover:text-foreground transition-colors">YETI.com</Link>
           </div>
         </div>
       </main>
