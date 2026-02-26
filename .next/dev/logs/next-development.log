@@ -22,3 +22,4 @@
 [01:53:33.286] Server  LOG     Pinecone: Found 5 matching records
 [02:14:06.839] Server  LOG      ✓ Compiled in 544ms
 [02:14:33.409] Server  LOG     Pinecone: Found 8 matching records
+[02:20:10.589] Server  LOG        Reload env: .env
