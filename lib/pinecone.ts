@@ -2,22 +2,30 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { PINECONE_TOP_K } from '@/config';
 import { PINECONE_INDEX_NAME } from '@/config';
 
-if (!process.env.PINECONE_API_KEY) {
-    throw new Error('PINECONE_API_KEY is not set');
+let _pinecone: Pinecone | null = null;
+
+function getPinecone(): Pinecone {
+    if (!_pinecone) {
+        if (!process.env.PINECONE_API_KEY) {
+            throw new Error('PINECONE_API_KEY is not set');
+        }
+        _pinecone = new Pinecone({
+            apiKey: process.env.PINECONE_API_KEY,
+        });
+    }
+    return _pinecone;
 }
 
-export const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY,
-});
-
-export const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
+function getPineconeIndex() {
+    return getPinecone().Index(PINECONE_INDEX_NAME);
+}
 
 export async function searchPinecone(
     query: string,
 ): Promise<string> {
     try {
 
-        const results = await pineconeIndex.namespace('__default__').searchRecords({
+        const results = await getPineconeIndex().namespace('__default__').searchRecords({
             query: {
                 inputs: {
                     text: query,
